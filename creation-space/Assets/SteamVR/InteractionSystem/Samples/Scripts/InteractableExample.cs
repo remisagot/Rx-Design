@@ -20,6 +20,8 @@ namespace Valve.VR.InteractionSystem.Sample
 		private Quaternion oldRotation;
 		public GameObject PosObject;
 
+		public bool firstGrab;
+
 		private float attachTime;
 
 		private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & ( ~Hand.AttachmentFlags.SnapOnAttach ) & (~Hand.AttachmentFlags.DetachOthers) & (~Hand.AttachmentFlags.VelocityMovement);
@@ -37,6 +39,8 @@ namespace Valve.VR.InteractionSystem.Sample
             hoveringText.text = "Hovering: False";*/
 
             interactable = this.GetComponent<Interactable>();
+
+			firstGrab = false;
 			
 		}
 
@@ -80,6 +84,8 @@ namespace Valve.VR.InteractionSystem.Sample
 
                 // Attach this object to the hand
                 hand.AttachObject(gameObject, startingGrabType, attachmentFlags);
+
+				
 				
 				//Debug.Log("Drag!");
             }
@@ -94,7 +100,13 @@ namespace Valve.VR.InteractionSystem.Sample
 				// Restore position/rotation
 				/*  transform.position = oldPosition;
 				  transform.rotation = oldRotation;*/
-				GameObject generatedObj = Instantiate(PosObject, oldPosition, oldRotation) as GameObject;
+				if (firstGrab == false)
+				{
+					GameObject generatedObj = Instantiate(PosObject, oldPosition, oldRotation) as GameObject;
+				}
+
+				firstGrab = true;
+				
 
 				//Debug.Log("EndDrag!");
 			}
